@@ -22,7 +22,10 @@ class WorkingPeriodAdmin(admin.ModelAdmin):
 
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "employee"]
+    list_filter = ('date', 'employee')
+    date_hierarchy = 'date'
+    # fields = ('timeOfEntry',)
+    list_display = ["__str__", "timeOfEntry", "departureTime", "employee"]
     class Meta:
         model = AttendanceRecord
 
