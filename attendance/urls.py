@@ -8,6 +8,6 @@ from . import views
 
 app_name = 'attendance'
 urlpatterns = [
-    url(r'^$', views.IndexView, name='index'),
-    url(r'^attendancerecord/list/$', views.AttendanceRecordList, name='attendance/attendancerecord/list'),
+    url(r'^$', views.indexView, name='index'),
+    url(r'^attendancerecord/list/$', views.attendanceRecordList, name='attendance/attendancerecord/list'),
 ]
