@@ -4,46 +4,53 @@ from attendance.models import Department, Employee, WorkingPeriod, AttendanceRec
 
 # Register your models here.
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ("__str__",)
     class Meta:
         model = Department
 
 
+class AttendanceRecordInLine(admin.TabularInline):
+    model = AttendanceRecord
+
+
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ("__str__",)
+    inlines = (AttendanceRecordInLine,)
+    
     class Meta:
         model = Employee
-
-
+    
+    
 class WorkingPeriodAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ("__str__",)
     class Meta:
         model = WorkingPeriod
 
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
-    list_filter = ('date', 'employee')
-    date_hierarchy = 'date'
-    # fields = ('timeOfEntry',)
-    list_display = ["__str__", "timeOfEntry", "departureTime", "employee"]
+    list_filter = ("date", "employee")
+    date_hierarchy = "date"
+    list_display = ("__str__", "timeOfEntry", "departureTime", "employee")
+    list_editable = ("timeOfEntry", "departureTime")
+    
     class Meta:
         model = AttendanceRecord
 
 
 class JustificationTypeAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ("__str__",)
     class Meta:
         model = JustificationType
 
 
 class JustificationAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ("__str__",)
     class Meta:
         model = Justification
 
 
 class PersonalControlAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "employee"]
+    list_display = ("__str__", "employee")
     class Meta:
         model = PersonalControl
 
