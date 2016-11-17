@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Attendance Record</title>
+{% load static %}
+
+<script type="text/javascript" src="{% static 'attendance/jquery/jquery-2.2.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'attendance/jquery/jquery-ui-1.11.4/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{% static 'attendance/jquery/jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'attendance/bootstrap/bootstrap-3.3.6/js/bootstrap.js' %}"></script>
+
+<link href="{% static 'attendance/bootstrap/bootstrap-3.3.6/css/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'attendance/bootstrap/bootstrap-3.3.6/css/bootstrap-theme.css' %}" rel="stylesheet">
+
+<script type="text/javascript"> -->
+ 	jQuery(document).ready(function() {
+ 		jQuery(".confirm").on("click",function() {
+ 			return confirm("If you delete this Item, you can not be recovered. Continue?");
+ 		});
+ 	});
+</script>
+
+</head>
+<body>
+
+	<div class="container">
+
+		<br />
+		<fieldset>
+			<legend>Attendance Record List</legend>
+		</fieldset>
+
+		<table class="table table-bordered">
+			<tr>
+				<td><b>#</b></td>
+				<td><b>Employee</b></td>
+				<td><b>Number of Hours</b></td>
+			</tr>
+			{% for attendance in attendances %}
+			<tr>
+				<td><b> {{ forloop.counter0|add:attendances.start_index }} </b></td>
+				<td>{{ attendance.employee.name }} {{ attendance.employee.lastName }}</td>
+				<td>NNNN</td>
+			</tr>
+			{% endfor %}
+
+		</table>
+
+		<div align="center">
+			{% if attendances.has_other_pages %}
+		    <ul class="pagination">
+		    {% if attendances.has_previous %}
+		      <li><a href="?page={{ attendances.previous_page_number }}">&laquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in attendances.paginator.page_range %}
+		      {% if attendances.number == i %}
+		        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li><a href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if attendances.has_next %}
+		      <li><a href="?page={{ attendances.next_page_number }}">&raquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&raquo;</span></li>
+		    {% endif %}
+		    </ul>
+		  {% endif %}
+		</div>
+
+	</div>
+
+	<br />
+	<br />
+
+</body>
+</html>

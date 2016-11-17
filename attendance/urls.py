@@ -9,4 +9,5 @@ from . import views
 app_name = 'attendance'
 urlpatterns = [
     url(r'^$', views.IndexView, name='index'),
+    url(r'^attendancerecord/list/$', views.AttendanceRecordList, name='attendance/attendancerecord/list'),
 ]
