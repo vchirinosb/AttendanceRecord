@@ -28,8 +28,8 @@ class WorkingPeriodAdmin(admin.ModelAdmin):
 
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
-    list_filter = ("date", "employee")
-    date_hierarchy = "date"
+    list_filter = ("dateAttendance", "employee")
+    date_hierarchy = "dateAttendance"
     list_display = ("__str__", "timeOfEntry", "departureTime", "employee")
     list_editable = ("timeOfEntry", "departureTime")
     

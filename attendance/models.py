@@ -31,12 +31,12 @@ class WorkingPeriod(models.Model):
 class AttendanceRecord(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
     workingPeriod = models.ForeignKey(WorkingPeriod, on_delete=models.PROTECT)
-    date = models.DateField()
+    dateAttendance = models.DateField()
     timeOfEntry = models.TimeField()
     departureTime = models.TimeField()
     
     def __str__(self):
-        return str(self.date)
+        return str(self.dateAttendance)
 
 
 class JustificationType(models.Model):

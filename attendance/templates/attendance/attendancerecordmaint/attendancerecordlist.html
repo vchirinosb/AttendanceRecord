@@ -37,39 +37,15 @@
 				<td><b>Employee</b></td>
 				<td><b>Number of Hours</b></td>
 			</tr>
-			{% for attendance in attendances %}
+			{% for employee in employees %}
 			<tr>
-				<td><b> {{ forloop.counter0|add:attendances.start_index }} </b></td>
-				<td>{{ attendance.employee.name }} {{ attendance.employee.lastName }}</td>
-				<td>NNNN</td>
+				<td><b> {{ forloop.counter }} </b></td>
+				<td>{{ employee.name }} {{ employee.lastName }}</td>
+				<td>{{ employee.numberHours }}</td>
 			</tr>
 			{% endfor %}
 
 		</table>
-
-		<div align="center">
-			{% if attendances.has_other_pages %}
-		    <ul class="pagination">
-		    {% if attendances.has_previous %}
-		      <li><a href="?page={{ attendances.previous_page_number }}">&laquo;</a></li>
-		    {% else %}
-		      <li class="disabled"><span>&laquo;</span></li>
-		    {% endif %}
-		    {% for i in attendances.paginator.page_range %}
-		      {% if attendances.number == i %}
-		        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-		      {% else %}
-		        <li><a href="?page={{ i }}">{{ i }}</a></li>
-		      {% endif %}
-		    {% endfor %}
-		    {% if attendances.has_next %}
-		      <li><a href="?page={{ attendances.next_page_number }}">&raquo;</a></li>
-		    {% else %}
-		      <li class="disabled"><span>&raquo;</span></li>
-		    {% endif %}
-		    </ul>
-		  {% endif %}
-		</div>
 
 	</div>
 
