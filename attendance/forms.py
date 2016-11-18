@@ -24,12 +24,13 @@ class EmployeeFilterForm(forms.Form):
         self.fields['startDate'].label = "From"
         self.fields['endDate'].label = "To"
 
-    def getEmployees(
-            self, employeeIdTmp=None, startDateTmp=None, endDateTmp=None):
-        if employeeIdTmp:
+    def getEmployees(self):
+        if self.is_valid():
             return Employee.objects.filter(
                 attendancerecord__dateAttendance__range=[
-                    startDateTmp, endDateTmp], id__in=employeeIdTmp)\
+                    self.cleaned_data['startDate'],
+                    self.cleaned_data['endDate']], id__in=self.cleaned_data[
+                        'name'].values("id"))\
                 .annotate(numberHours=Sum(
                     F('attendancerecord__departureTime') -
                     F('attendancerecord__timeOfEntry')))
@@ -38,12 +39,13 @@ class EmployeeFilterForm(forms.Form):
                 numberHours=Sum(F('attendancerecord__departureTime') -
                                 F('attendancerecord__timeOfEntry')))
 
-    def getTotalHours(
-            self, employeeIdTmp=None, startDateTmp=None, endDateTmp=None):
-        if employeeIdTmp:
+    def getTotalHours(self):
+        if self.is_valid():
             return Employee.objects.filter(
                 attendancerecord__dateAttendance__range=[
-                    startDateTmp, endDateTmp], id__in=employeeIdTmp)\
+                    self.cleaned_data['startDate'],
+                    self.cleaned_data['endDate']], id__in=self.cleaned_data[
+                        'name'].values("id"))\
                 .aggregate(numberHours=Sum(
                     F('attendancerecord__departureTime') -
                     F('attendancerecord__timeOfEntry')))
