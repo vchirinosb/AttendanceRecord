@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models.aggregates import Sum
 from django.db.models.expressions import F
-from attendance.models import Employee
+from attendance.models import Employee, AttendanceRecord
 from attendance.forms import EmployeeFilterForm
 
 
@@ -17,10 +17,32 @@ def attendanceRecordList(request):
     template_name = 'attendance/attendancerecordmaint/attendancerecordlist.html'
     form_class = EmployeeFilterForm(request.POST or None)
     
-    #attendances = AttendanceRecord.objects.all()
-    
     employees = Employee.objects.annotate(numberHours=Sum(F('attendancerecord__departureTime') - 
                                                           F('attendancerecord__timeOfEntry')))
+    
+    if form_class.is_valid():
+        employeeIdTmp = form_class.cleaned_data['name'].values("id")
+        startDateTmp = form_class.cleaned_data['startDate']
+        endDateTmp = form_class.cleaned_data['endDate']
+        
+        print("Name: " + str(employeeIdTmp))
+        print("Start Date: " + str(startDateTmp))
+        print("End Date: " + str(endDateTmp))
+        
+        #employees = Employee.objects.annotate(
+        #    numberHours=Sum(F('attendancerecord__departureTime') - 
+        #                    F('attendancerecord__timeOfEntry')))
+        
+        #employees = Employee.objects.filter(
+        #                        attendancerecord__dateAttendance__range=[startDateTmp, endDateTmp],
+        #                        id__in = employeeIdTmp)
+        
+        employees = Employee.objects.filter(
+                                attendancerecord__dateAttendance__range=[startDateTmp, endDateTmp],
+                                id__in = employeeIdTmp)\
+                                .annotate(
+                                    numberHours=Sum(F('attendancerecord__departureTime') - 
+                                                    F('attendancerecord__timeOfEntry')))
     
     context = { 
         "form": form_class,
