@@ -66,13 +66,13 @@
 			{% for employee in employees %}
 			<tr>
 				<td><b> {{ forloop.counter }} </b></td>
-				<td>{{ employee.name }} {{ employee.lastName }}</td>
-				<td>{{ employee.numberHours }}</td>
+				<td>{{ employee.name }} {{ employee.last_name }}</td>
+				<td>{{ employee.number_hours }}</td>
 			</tr>
 			{% endfor %}
 			<tr>
 			    <td colspan="2" align="right"> <b> Total Hours: </b> </td>
-			    <td> {{ totalHours.numberHours }} </td>
+			    <td> {{ total_hours.number_hours }} </td>
 			</tr>
 
 		</table>

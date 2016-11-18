@@ -7,8 +7,8 @@ from django.db.models.aggregates import Sum
 class EmployeeFilterForm(forms.Form):
     name = forms.ModelMultipleChoiceField(queryset=Employee.objects.all(),
                                           required=False)
-    startDate = forms.DateField(required=False)
-    endDate = forms.DateField(required=False)
+    start_date = forms.DateField(required=False)
+    end_date = forms.DateField(required=False)
 
     class Meta:
         model = Employee
@@ -21,35 +21,35 @@ class EmployeeFilterForm(forms.Form):
                 'class': 'form-control'
             })
         self.fields['name'].label = "Select Employees"
-        self.fields['startDate'].label = "From"
-        self.fields['endDate'].label = "To"
+        self.fields['start_date'].label = "From"
+        self.fields['end_date'].label = "To"
 
-    def getEmployees(self):
+    def get_employees(self):
         if self.is_valid():
-            return Employee.objects.filter(
-                attendancerecord__dateAttendance__range=[
-                    self.cleaned_data['startDate'],
-                    self.cleaned_data['endDate']], id__in=self.cleaned_data[
-                        'name'].values("id"))\
-                .annotate(numberHours=Sum(
-                    F('attendancerecord__departureTime') -
-                    F('attendancerecord__timeOfEntry')))
+            return (Employee.objects.filter(
+                attendancerecord__date_attendance__range=[
+                    self.cleaned_data['start_date'],
+                    self.cleaned_data['end_date']], id__in=self.cleaned_data[
+                        'name'].values("id"))
+                    .annotate(number_hours=Sum(
+                        F('attendancerecord__departure_time') -
+                        F('attendancerecord__time_of_entry'))))
         else:
             return Employee.objects.annotate(
-                numberHours=Sum(F('attendancerecord__departureTime') -
-                                F('attendancerecord__timeOfEntry')))
+                number_hours=Sum(F('attendancerecord__departure_time') -
+                                 F('attendancerecord__time_of_entry')))
 
-    def getTotalHours(self):
+    def get_total_hours(self):
         if self.is_valid():
-            return Employee.objects.filter(
-                attendancerecord__dateAttendance__range=[
-                    self.cleaned_data['startDate'],
-                    self.cleaned_data['endDate']], id__in=self.cleaned_data[
-                        'name'].values("id"))\
-                .aggregate(numberHours=Sum(
-                    F('attendancerecord__departureTime') -
-                    F('attendancerecord__timeOfEntry')))
+            return (Employee.objects.filter(
+                attendancerecord__date_attendance__range=[
+                    self.cleaned_data['start_date'],
+                    self.cleaned_data['end_date']], id__in=self.cleaned_data[
+                        'name'].values("id"))
+                    .aggregate(number_hours=Sum(
+                        F('attendancerecord__departure_time') -
+                        F('attendancerecord__time_of_entry'))))
         else:
             return Employee.objects.aggregate(
-                numberHours=Sum(F('attendancerecord__departureTime') -
-                                F('attendancerecord__timeOfEntry')))
+                number_hours=Sum(F('attendancerecord__departure_time') -
+                                 F('attendancerecord__time_of_entry')))

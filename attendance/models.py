@@ -12,18 +12,18 @@ class Department(models.Model):
 class Employee(models.Model):
     department = models.ForeignKey(Department, on_delete=models.PROTECT)
     name = models.CharField(max_length=40)
-    lastName = models.CharField(max_length=40)
+    last_name = models.CharField(max_length=40)
     dni = models.CharField(max_length=8, validators=[RegexValidator(
         regex='^[0-9]*$', message='Only numeric characters')])
 
     def __str__(self):
-        return self.name + " " + self.lastName
+        return self.name + " " + self.last_name
 
 
 class WorkingPeriod(models.Model):
     description = models.CharField(max_length=70)
-    timeOfEntry = models.TimeField()
-    departureTime = models.TimeField()
+    time_of_entry = models.TimeField()
+    departure_time = models.TimeField()
 
     def __str__(self):
         return self.description
@@ -31,10 +31,10 @@ class WorkingPeriod(models.Model):
 
 class AttendanceRecord(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    workingPeriod = models.ForeignKey(WorkingPeriod, on_delete=models.PROTECT)
-    dateAttendance = models.DateField()
-    timeOfEntry = models.TimeField()
-    departureTime = models.TimeField()
+    working_period = models.ForeignKey(WorkingPeriod, on_delete=models.PROTECT)
+    date_attendance = models.DateField()
+    time_of_entry = models.TimeField()
+    departure_time = models.TimeField()
 
     def __str__(self):
         return str(self.dateAttendance)
@@ -48,11 +48,11 @@ class JustificationType(models.Model):
 
 
 class Justification(models.Model):
-    justificationType = models.ForeignKey(JustificationType,
-                                          on_delete=models.PROTECT)
+    justification_type = models.ForeignKey(JustificationType,
+                                           on_delete=models.PROTECT)
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    startDate = models.DateField()
-    endDate = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
     def __str__(self):
         return str(self.startDate)
@@ -60,20 +60,20 @@ class Justification(models.Model):
 
 class PersonalControl(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    monthYear = models.DateField()
-    leaveDays = models.CharField(
+    month_year = models.DateField()
+    leave_days = models.CharField(
         max_length=2, blank=True, null=True,
         validators=[RegexValidator(regex='^[0-9]*$',
                                    message='Only numeric characters')])
-    unjustifAbsencesDays = models.CharField(
+    unjustif_absences_days = models.CharField(
         max_length=2, blank=True, null=True,
         validators=[RegexValidator(regex='^[0-9]*$',
                                    message='Only numeric characters')])
-    justifAbsencesDays = models.CharField(
+    justif_absences_days = models.CharField(
         max_length=2, blank=True, null=True,
         validators=[RegexValidator(regex='^[0-9]*$',
                                    message='Only numeric characters')])
-    totalDays = models.CharField(
+    total_days = models.CharField(
         max_length=2,
         validators=[RegexValidator(regex='^[0-9]*$',
                                    message='Only numeric characters')])

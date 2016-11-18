@@ -30,10 +30,10 @@ class WorkingPeriodAdmin(admin.ModelAdmin):
 
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
-    list_filter = ("dateAttendance", "employee")
-    date_hierarchy = "dateAttendance"
-    list_display = ("__str__", "timeOfEntry", "departureTime", "employee")
-    list_editable = ("timeOfEntry", "departureTime")
+    list_filter = ("date_attendance", "employee")
+    date_hierarchy = "date_attendance"
+    list_display = ("__str__", "time_of_entry", "departure_time", "employee")
+    list_editable = ("time_of_entry", "departure_time")
 
     class Meta:
         model = AttendanceRecord
