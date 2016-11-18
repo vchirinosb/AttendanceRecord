@@ -15,7 +15,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=40)
     lastName = models.CharField(max_length=40)
     dni = models.CharField(max_length=8, validators=[RegexValidator(
-                        regex='^[0-9]*$', message='Only numeric characters')])
+        regex='^[0-9]*$', message='Only numeric characters')])
 
     def __str__(self):
         return self.name + " " + self.lastName
@@ -62,29 +62,22 @@ class Justification(models.Model):
 class PersonalControl(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
     monthYear = models.DateField()
-    leaveDays = models.CharField(max_length=2, blank=True, null=True,
-                                 validators=[
-                                     RegexValidator(
-                                         regex='^[0-9]*$',
-                                         message='Only numeric characters')])
+    leaveDays = models.CharField(
+        max_length=2, blank=True, null=True,
+        validators=[RegexValidator(regex='^[0-9]*$',
+                                   message='Only numeric characters')])
     unjustifAbsencesDays = models.CharField(
-                                max_length=2, blank=True,
-                                null=True,
-                                validators=[
-                                    RegexValidator(
-                                        regex='^[0-9]*$',
-                                        message='Only numeric characters')])
+        max_length=2, blank=True, null=True,
+        validators=[RegexValidator(regex='^[0-9]*$',
+                                   message='Only numeric characters')])
     justifAbsencesDays = models.CharField(
-                                max_length=2, blank=True, null=True,
-                                validators=[
-                                    RegexValidator(
-                                        regex='^[0-9]*$',
-                                        message='Only numeric characters')])
-    totalDays = models.CharField(max_length=2,
-                                 validators=[
-                                     RegexValidator(
-                                         regex='^[0-9]*$',
-                                         message='Only numeric characters')])
+        max_length=2, blank=True, null=True,
+        validators=[RegexValidator(regex='^[0-9]*$',
+                                   message='Only numeric characters')])
+    totalDays = models.CharField(
+        max_length=2,
+        validators=[RegexValidator(regex='^[0-9]*$',
+                                   message='Only numeric characters')])
     observations = models.CharField(max_length=250, blank=True, null=True)
 
     def __str__(self):

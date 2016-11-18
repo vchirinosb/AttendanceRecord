@@ -20,39 +20,34 @@ def attendanceRecordList(request):
     form_class = EmployeeFilterForm(request.POST or None)
 
     employees = Employee.objects.annotate(
-                        numberHours=Sum(F('attendancerecord__departureTime') -
-                                        F('attendancerecord__timeOfEntry')))
+        numberHours=Sum(F('attendancerecord__departureTime') -
+                        F('attendancerecord__timeOfEntry')))
+
+    totalHours = Employee.objects.aggregate(
+        numberHours=Sum(F('attendancerecord__departureTime') -
+                        F('attendancerecord__timeOfEntry')))
 
     if form_class.is_valid():
         employeeIdTmp = form_class.cleaned_data['name'].values("id")
         startDateTmp = form_class.cleaned_data['startDate']
         endDateTmp = form_class.cleaned_data['endDate']
 
-        print("Name: " + str(employeeIdTmp))
-        print("Start Date: " + str(startDateTmp))
-        print("End Date: " + str(endDateTmp))
-
-        # employees = Employee.objects.annotate(
-        #    numberHours=Sum(F('attendancerecord__departureTime') -
-        #                    F('attendancerecord__timeOfEntry')))
-
-        # employees = Employee.objects.filter(
-        #                        attendancerecord__dateAttendance__range=[
-        #                            startDateTmp, endDateTmp],
-        #                        id__in = employeeIdTmp)
-
         employees = Employee.objects.filter(
-                                attendancerecord__dateAttendance__range=[
-                                    startDateTmp, endDateTmp],
-                                id__in=employeeIdTmp)\
-                            .annotate(
-                                numberHours=Sum(
-                                    F('attendancerecord__departureTime') -
-                                    F('attendancerecord__timeOfEntry')))
+            attendancerecord__dateAttendance__range=[startDateTmp, endDateTmp],
+            id__in=employeeIdTmp)\
+            .annotate(numberHours=Sum(F('attendancerecord__departureTime') -
+                                      F('attendancerecord__timeOfEntry')))
+
+        totalHours = Employee.objects.filter(
+            attendancerecord__dateAttendance__range=[startDateTmp, endDateTmp],
+            id__in=employeeIdTmp)\
+            .aggregate(numberHours=Sum(F('attendancerecord__departureTime') -
+                                       F('attendancerecord__timeOfEntry')))
 
     context = {
         "form": form_class,
-        "employees": employees
+        "employees": employees,
+        "totalHours": totalHours
     }
 
     return render(request, template_name, context)
