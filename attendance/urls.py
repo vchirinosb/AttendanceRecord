@@ -1,8 +1,3 @@
-'''
-Created on 16 nov. 2016
-
-@author: Hugo
-'''
 from django.conf.urls import url
 from . import views
 
